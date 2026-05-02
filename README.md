@@ -69,7 +69,7 @@ GPIO_BUTTON ──────┤ GPIO 0  (or any IO) ├──[ button ]──�
 
 > **RGB LED boards** (official Espressif DevKitC-1 / DevKitM-1 ship with a
 > WS2812 RGB LED, not a plain GPIO-driven LED). Either wire an external LED as
-> above, or set `LED_PIN -1` to disable the indicator.
+> above, or set `LED_PIN = -1` to disable the indicator.
 
 ---
 
