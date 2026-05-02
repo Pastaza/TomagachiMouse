@@ -52,8 +52,8 @@
 USBHIDMouse Mouse;
 
 // ── State ──────────────────────────────────────────────────────────────
-static volatile bool usbMounted = false;  // set by USB event callback
-static uint32_t      mountedAt  = 0;      // millis() when USB was mounted
+static volatile bool     usbMounted = false;  // set by USB event callback
+static volatile uint32_t mountedAt  = 0;      // millis() when USB was mounted
 static bool          started    = false;  // true after START_DELAY_MS
 static bool          paused     = false;  // toggled by button
 static uint32_t      lastMove   = 0;      // timestamp of last HID report
@@ -175,6 +175,12 @@ void loop() {
   // ── 4. Send HID report ───────────────────────────────────────────────
   if (started && !paused && (now - lastMove) >= INTERVAL_MS) {
     lastMove = now;
-    Mouse.move(DX, DY, /*wheel=*/0);
+    // Alternate direction each report so the cursor oscillates in-place
+    // rather than drifting off the screen edge.
+    static int8_t dx = DX;
+    static int8_t dy = DY;
+    Mouse.move(dx, dy, /*wheel=*/0);
+    dx = -dx;
+    dy = -dy;
   }
 }
